@@ -5,22 +5,14 @@
 Identifier::Identifier() = default;
 
 bool isLatter(char c) {
-    if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || c == '_') {
-        return true;
-    } else {
-        return false;
-    }
+    return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || c == '_';
 }
 
 bool isDigit(char c) {
-    if ('0' <= c && c <= '9') {
-        return true;
-    } else {
-        return false;
-    }
+    return '0' <= c && c <= '9';
 }
 
-int proverochka(const char *str) {
+int check(const char *str) {
     if (!isLatter(str[0]))
         return false;
 
@@ -28,13 +20,13 @@ int proverochka(const char *str) {
         if (!isLatter(str[i]) || !isDigit(str[i]))
             return false;
     }
+
+    return true;
 }
 
 Identifier::Identifier(const char *str) {
-    if (str == nullptr || !proverochka(str)) {
-        data = new char[0];
-        length = 0;
-    } else {
+    if (str != nullptr && check(str)) {
+        delete[] data;
         data = new char[strlen(str)];
         length = strlen(str);
         memcpy(data, str, length);
@@ -43,9 +35,17 @@ Identifier::Identifier(const char *str) {
 
 Identifier::Identifier(const Identifier &other) : String(other) {}
 
-int Identifier::findLast(char c) {
-
-    return 0;
+int Identifier::findLast(char c, const char* str) {
+    if (str == nullptr) {
+        data = new char[0];
+        length = 0;
+    } else {
+        for (int i = strlen(str); i > 0; i--) {
+            if (str[i] == c)
+                return i;
+        }
+        return -1;
+    }
 }
 
 Identifier::~Identifier() = default;
