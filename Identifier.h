@@ -11,7 +11,11 @@ public:
 
     ~Identifier();
 
-    int findLast(char c, const char* str);
+    int findLast(char c) const;
+
+    Identifier &operator=(const Identifier &other);
+
+    bool operator>(const Identifier other);
 
 protected:
     explicit Identifier(const char *str);

@@ -1,6 +1,8 @@
 #include "Identifier.h"
 
 #include <cstring>
+#include <math.h>
+#include <algorithm>
 
 Identifier::Identifier() = default;
 
@@ -17,7 +19,7 @@ int check(const char *str) {
         return false;
 
     for (int i = 1; i < strlen(str); i++) {
-        if (!isLatter(str[i]) || !isDigit(str[i]))
+        if (!isLatter(str[i]) || isDigit(str[i]))
             return false;
     }
 
@@ -35,17 +37,42 @@ Identifier::Identifier(const char *str) {
 
 Identifier::Identifier(const Identifier &other) : String(other) {}
 
-int Identifier::findLast(char c, const char* str) {
-    if (str == nullptr) {
-        data = new char[0];
-        length = 0;
-    } else {
-        for (int i = strlen(str); i > 0; i--) {
-            if (str[i] == c)
-                return i;
+
+int Identifier::findLast(char c) const {
+    for (int i = length - 1; i >= 0; i--) {
+        if (data[i] == c) {
+            return i;
         }
-        return -1;
     }
+    return -1;
+}
+
+Identifier& Identifier::operator=(const Identifier &other) {
+    if (this != &other) {
+        if (length != other.length) {
+            delete[] data;
+            data = new char[other.length];
+            length = other.length;
+        }
+        memcpy(data, other.data, length);
+    }
+
+    return *this;
+}
+
+bool Identifier::operator>(const Identifier other) {
+    int len = std::min(length, other.length);
+
+    bool a;
+
+    for (int i = 0; i < len; i++){
+        if(data[i] <= other.data[i]){
+            return false;
+        }
+        else
+            a = true;
+    }
+    return a;
 }
 
 Identifier::~Identifier() = default;
