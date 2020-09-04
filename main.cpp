@@ -1,7 +1,5 @@
-#include <iostream>
-#include <cmath>
-#include <cstring>
+#include "menu.h"
 
 int main() {
-
+    menu();
 }
